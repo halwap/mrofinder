@@ -1,0 +1,17 @@
+###### Software ######
+
+Software paths/calls:
+
+ hmmsearch: hmmsearch
+ mitofates: /home/halakuc/software/MitoFates/MitoFates.pl
+ targetp: targetp
+ tmhmm: /home/halakuc/software/tmhmm-2.0c/bin/tmhmm
+ psipred: run_psipred.pl
+ blast: /usr/local/bin/
+
+
+#### Databases ######
+
+Databases:
+
+ psipred: /mnt/databases/uniprot/uniprot
