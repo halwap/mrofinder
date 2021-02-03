@@ -6,8 +6,8 @@ import math
 from Bio import SeqIO, SearchIO
 # from glob import glob as glob
 
-import fajna_nazwa_classes as classes
-import fajna_nazwa_functions as helpers
+import mrofinder_classes as classes
+import mrofinder_helpers as helpers
 
 
 def main():
@@ -16,10 +16,11 @@ def main():
     proteome.add_homology(manage_hmmers(options), 'hmmer')
     proteome.add_homology(manage_mitominer(options), 'mitominer')
     manage_targeting(proteome, options)
-    manage_structure(options, proteome)
+    manage_structure(proteome, options)
+    manage_interproscan(proteome, options)
+    manage_blast_nr(proteome, options)
     proteome.annotate()
     save_table(options, proteome)
-
 
 
 def parser():
@@ -39,13 +40,17 @@ def parser():
     # homology options
     hmmer = parser.add_mutually_exclusive_group(required=True)
     hmmer.add_argument('--hmmer_results', nargs='+',
-                        help='Directory containing results of conserved proteins hmmer search.')
+                       help='Directory containing results of conserved proteins hmmer search.')
     hmmer.add_argument('--hmmer_queries', nargs='+',
-                        help='Directory with profiles/profiles of conserved proteins to be used in hmmer search.')
+                       help='Directory with profiles/profiles of conserved proteins to be used in hmmer search.')
     parser.add_argument('--q2db_blast', nargs=1, help='Proteome to database blast file')
     parser.add_argument('--db2q_blast', nargs=1, help='Database to proteome blast file')
     parser.add_argument('--mitominer_fasta', help='Mitominer+ fasta after cdhit')
     parser.add_argument('--mitominer_db', help='Mitominer+ blast database')
+    parser.add_argument('--interproscan', nargs=1, help='Interproscan output (run externally (soon TM)).')
+    blast = parser.add_mutually_exclusive_group()
+    blast.add_argument('--blast_nr', nargs=1, help='Blast results in .xml format. (run externally (soon TM))')
+    blast.add_argument('--ncbi_nr_db', nargs=1, help='NCBI nr database', default='/mnt/databases/NCBI/nr/nr')
     # alpha/beta options
     parser.add_argument('--tmhmm', nargs='+', help='File(s) with tmhmm results.')
     parser.add_argument('--psipred_results', nargs=1, help='Directory with psipred results, names need to be \
@@ -153,7 +158,6 @@ def run_mitominer_blast(options):
         db_path = os.path.join(blast_wd, os.path.splitext(os.path.basename(options.working_fasta))[0])
         _s = subprocess.run([os.path.join(paths['blast'], 'makeblastdb'), '-dbtype', 'prot', '-in',
                              options.working_fasta, '-out', db_path])
-
     _p = subprocess.run([os.path.join(paths['blast'], 'blastp'), '-num_threads', str(options.threads), '-query',
                          options.working_fasta, '-db', options.mitominer_db, '-outfmt', '6', '-evalue', '0.001', '-out',
                          q2db_blast])
@@ -283,13 +287,13 @@ def parse_nommperd(nommpred_file):
 
 
 # ALPHA/BETA STRUCTURE
-def manage_structure(options, proteome):
+def manage_structure(proteome, options):
     manage_tmhmm(options, proteome)
     manage_beta_structure(options, proteome)
 
 
 # ALPHA
-def manage_tmhmm(options, proteome):
+def manage_tmhmm(proteome, options):
     if options.tmhmm:
         list_of_tmhmm_results = helpers.check_if_dir_or_file(options.tmhmm)
     else:
@@ -407,7 +411,80 @@ def parse_psipred(ss2_file, start, end):
         #         os.remove(file)
 
 
+# INTERPROSCAN
+
+def manage_interproscan(proteome, options):
+    print('Managing interproscan...')
+    if not options.interproscan:
+        options.interproscan = run_interproscan(options)
+    proteome.add_go_categories(parse_interproscan(options.interproscan))
+
+
+def run_interproscan(options):
+    interproscan_wd = os.path.join(options.working_directory, 'interproscan')
+    os.mkdir(interproscan_wd)
+    output_path = helpers.get_output_name(interproscan_wd, options.input, '.interproscan')
+    # TODO finish proper running
+    _p = subprocess.run([paths['interproscan'], '-i', options.input, '-o', output_path, '--goterms', '-f', 'tsv',
+                         '--cpu', str(options.threads)])
+    return output_path
+
+
+def parse_interproscan(interproscan_file, ):
+    protein2go = {}
+    with open(interproscan_file) as file:
+        for line in file:
+            line = line.strip().split('\t')
+            if len(line) == 14:
+                name, gos = line[0], line[13].split('|')
+                if name not in protein2go.keys():
+                    protein2go[name] = []
+                for go in gos:
+                    if go not in protein2go[name]:
+                        protein2go[name].append(go)
+    return protein2go
+
+
+# blast_nr
+
+def manage_blast_nr(proteome, options):
+    print('Managing blast nr...')
+    if options.blast_nr:
+        blast_nr_file = options.blast_nr
+    elif options.ncbi_nr_db:
+        blast_nr_file = run_blast_nr(options)
+    else:
+        return
+    blast_nr_dict = parse_blast_nr(blast_nr_file, proteome)
+    proteome.add_blast_nr_results(blast_nr_dict)
+
+
+def run_blast_nr(options):
+    blast_nr_wd = os.path.join(options.working_directory, 'blast_nr')
+    os.mkdir(blast_nr_wd)
+    output_path = helpers.get_output_name(blast_nr_wd, options.input, '2nr.xml')
+    _p = subprocess.run([os.path.join(paths['blast'], 'blastp'), '-num_threads', str(options.threads), '-query',
+                         options.working_fasta, '-db', options.ncbi_nr_db, '-outfmt', '5', '-evalue', '0.001', '-out',
+                         output_path])
+    return output_path
+
+
+def parse_blast_nr(blast_nr_file, proteome):
+    blast_dict = {}
+    results = SearchIO.parse(blast_nr_file, 'blast-xml')
+    for result in results:
+        hit = helpers.get_hit(result)
+        if hit == 'flag':
+            blast_dict[result.id] = ['-', '_just_hypothetical', '-']
+        elif hit:
+            blast_dict[result.id] = [hit.id, hit.description, helpers.get_evalue(hit)]
+        else:
+            blast_dict[result.id] = ['-', '_no_hit', '-']
+    return blast_dict
+
+
 # saving results
+
 def save_table(options, proteome):
     with open(options.output, 'w') as file:
         # TODO naming columns

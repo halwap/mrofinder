@@ -1,4 +1,4 @@
-import fajna_nazwa_functions as helpers
+import mrofinder_helpers as helpers
 import warnings
 
 
@@ -64,6 +64,23 @@ class Proteome:
             if protein.length >= 90:
                 protein.beta_signal = True
 
+    def add_go_categories(self, protein2go):
+        go_dictionary = helpers.get_go_dictionary()
+        for protein_name in self.proteins_keys:
+            go_ids, go_names = [], []
+            if protein_name in protein2go.keys():
+                go_ids = protein2go[protein_name]
+                go_names = []
+                for go_id in go_ids:
+                    if go_id in go_dictionary.keys():
+                        go_names.append(go_dictionary[go_id])
+            self.proteins[protein_name].add_go(go_ids, go_names)
+
+    def add_blast_nr_results(self, blast_dictionary):
+        for protein_name in self.proteins_keys:
+            blast_hit = blast_dictionary[protein_name]
+            self.proteins[protein_name].add_blast_nr(blast_hit)
+
     def annotate(self):
         for key, protein in self.proteins.items():
             protein.annotate()
@@ -83,8 +100,8 @@ class Protein:
         self.work_id = working_name
         self.seq = seq
         self.length = len(seq)
-        #self.uniprot_hit = ''
-        #self.pfam_hit = ''
+        # self.uniprot_hit = ''
+        # self.pfam_hit = ''
         self.hmmer = []
         self.mitominer_bbd = []
         self.targetp = None
@@ -95,6 +112,9 @@ class Protein:
         self.end_charge = 0
         self.beginning_charge = 0
         self.beta_signal = False
+        self.go_categories = []
+        self.go_descriptions = []
+        self.ncbi_nr_hit = []
         # classification
         self.tail_anchored = False
         self.mbomp = False
@@ -111,6 +131,12 @@ class Protein:
             list_to_print.append(';'.join(self.mitominer_bbd))
         else:
             list_to_print.append('_no_mitominer_bbds')
+        if self.go_categories:
+            list_to_print.append('|'.join(self.go_categories))
+            list_to_print.append('|'.join(self.go_descriptions))
+        else:
+            list_to_print.append('_no_go_hits')
+            list_to_print.append('_no_go_hits')
         list_to_print.append(str(self.targeted_by))
         list_to_print.extend([self.targetp.localisation, self.targetp.probability, self.mitofates.localisation,
                              self.mitofates.probability])
@@ -162,6 +188,13 @@ class Protein:
                 raise exc
             self.beginning_charge = helpers.calculate_charge(beginning_subseq)
             self.end_charge = helpers.calculate_charge(end_subseq)
+
+    def add_go(self, go_categories, go_descriptions):
+        self.go_categories = go_categories
+        self.go_descriptions = go_descriptions
+
+    def add_blast_nr(self, ncbi_hit_description):
+        self.ncbi_nr_hit = ncbi_hit_description
 
     def annotate(self):
         self.targeted_by = self.check_if_targeted()
@@ -267,4 +300,3 @@ class SingularResults(Results):
             raise ValueError("Protein {} annotated twice.".format(name_of_protein))
         else:
             self.dict_of_proteins[name_of_protein] = hit
-

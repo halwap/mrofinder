@@ -3,30 +3,17 @@ import os
 from glob import glob as glob
 import re
 import yaml
-import fajna_nazwa_classes as classes
+import mrofinder_classes as classes
 from shutil import rmtree
 from Bio import SeqIO
 
 
 def parse_paths():
     dirname = os.path.dirname(os.path.abspath(__file__))
-    path = os.path.join(dirname, 'fajna_nazwa_paths.txt')
+    path = os.path.join(dirname, 'mrofinder_paths.txt')
     with open(path) as file:
         parsed = yaml.safe_load(file)
     return parsed['Software paths/calls'], parsed['Databases']
-
-
-def parse_targetp_tabular(file):
-    list_of_hits = []
-    for line in file:
-        line = line.split() # Name, Len, mTP, SP, other, Loc, RC
-        try:
-            length, mTP, SP, other, RC = int(line[1]), int(line[2]), int(line[3]), int(line[4]), int(line[6])
-            name, localisation = line[0], line[5]
-            list_of_hits.append([])
-        except ValueError:
-            continue
-    return list_of_hits
 
 
 def check_working_directory(path, test_flag, continue_flag=False):
@@ -52,6 +39,14 @@ def check_working_directory(path, test_flag, continue_flag=False):
     else:
         os.mkdir(path)
     return path
+
+
+def get_basename(path):
+    return os.path.splitext(os.path.basename(path))[0]
+
+
+def get_output_name(working_directory, input_path, extension):
+    return os.path.join(working_directory, get_basename(input_path) + extension)
 
 
 def check_if_dir_or_file(list_of_paths, pattern=None):
@@ -101,13 +96,6 @@ def fix_fasta(options):
     return new2old
 
 
-def add_annotation(protein_name, hmmer_name, dict_of_annotations):
-    if protein_name in dict_of_annotations:
-        dict_of_annotations[protein_name].append(hmmer_name)
-    else:
-        dict_of_annotations[protein_name] = [hmmer_name]
-
-
 def parse_blast_tabular(handle):
     """Parses tabular blast file, returns list of hits with evalue <= best_evalue for each query."""
     hits_dictionary = {}
@@ -144,7 +132,9 @@ def search_for_bbhs(q2db_dict, db2q_dict):
     return final_dict
 
 
-def fasta_for_targetp(fasta, working_directory, max_chars = 200000):
+# targetp related
+
+def fasta_for_targetp(fasta, working_directory, max_chars=200000):
     results = []
     out_base = os.path.join(working_directory, get_basename(fasta))
     records = parse_fasta_for_targetp(fasta)  # [(header, seq), ...]
@@ -190,15 +180,8 @@ def print_fasta_for_targetp(output, print_buffer):
             _output.write(line + '\n')
 
 
-def get_basename(path):
-    return os.path.splitext(os.path.basename(path))[0]
+# TMHMM and MBOMP implementation
 
-
-def get_output_name(working_directory, input_path, extension):
-    return os.path.join(working_directory, get_basename(input_path) + extension)
-
-
-# TMHMM IMPLEMENTATION
 def calculate_tmd_gravy(seq):
     score = 0
     length = len(seq)
@@ -273,3 +256,45 @@ def choose_pattern(pattern):
     help_dict['3'] = '[^{2}][X{2}]G[X{1}].[X{2}].[X{2}]'.format(Po, hy, Hy)  # H^yHyGhyxHyxHy
     help_dict['4'] = '[^{2}][X{2}]G[X{1}][^{2}][X{2}].[X{2}]'.format(Po, hy, Hy)  # H^yHyGhyH^yHyxHy
     return help_dict[pattern]
+
+
+# go categories
+
+def get_go_dictionary():
+    from goatools import obo_parser
+    go_dict = obo_parser.GODag('go-basic.obo', optional_attrs='relationship')
+    return go_dict
+
+
+# blast nr parsing
+
+def get_hit(result):
+    flag = False
+    for hit in result:
+        if not check_banned(hit.description):
+            return hit
+        flag = True
+    if flag:
+        return 'flag'
+    else:
+        return None
+
+
+def check_banned(description):
+    banned = ['LOW QUALITY PROTEIN', 'hypothetical', 'Hypothetical', 'HYPOTHETICAL', 'predicted', 'Predicted', 'PREDICTED', 'unnamed', 'unknown', 'uncharacterized', 'Uncharacterized']
+    for ban in banned:
+        if re.search(ban, description):
+            return True
+    else:
+        return False
+
+
+def get_evalue(hit):
+    evalue = 10
+    if hit.hsps:
+        for hsp in hit.hsps:
+            if evalue > hsp.evalue:
+                evalue = hsp.evalue
+    return str(evalue)
+
+

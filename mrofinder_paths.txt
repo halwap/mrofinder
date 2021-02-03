@@ -8,6 +8,7 @@ Software paths/calls:
  tmhmm: /home/halakuc/software/tmhmm-2.0c/bin/tmhmm
  psipred: run_psipred.pl
  blast: /usr/local/bin/
+ interproscan: /home/halakuc/software/interproscan-5.36-75.0/interproscan.sh
 
 
 #### Databases ######
@@ -15,3 +16,4 @@ Software paths/calls:
 Databases:
 
  psipred: /mnt/databases/uniprot/uniprot
+ go_basic: /home/halakuc/mt_proteins/go-basic.obo # http://geneontology.org/docs/download-ontology/
