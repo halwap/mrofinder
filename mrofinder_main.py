@@ -288,7 +288,7 @@ def parse_nommperd(nommpred_file):
 
 # ALPHA/BETA STRUCTURE
 def manage_structure(proteome, options):
-    manage_tmhmm(options, proteome)
+    manage_tmhmm(proteome, options)
     manage_beta_structure(options, proteome)
 
 
