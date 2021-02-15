@@ -64,8 +64,7 @@ class Proteome:
             if protein.length >= 90:
                 protein.beta_signal = True
 
-    def add_go_categories(self, protein2go):
-        go_dictionary = helpers.get_go_dictionary()
+    def add_go_categories(self, protein2go, go_dictionary):
         for protein_name in self.proteins_keys:
             go_ids, go_names = [], []
             if protein_name in protein2go.keys():

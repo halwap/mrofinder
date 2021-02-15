@@ -417,7 +417,8 @@ def manage_interproscan(proteome, options):
     print('Managing interproscan...')
     if not options.interproscan:
         options.interproscan = run_interproscan(options)
-    proteome.add_go_categories(parse_interproscan(options.interproscan))
+    go_dictionary = helpers.get_go_dictionary(paths['go_basic'])
+    proteome.add_go_categories(parse_interproscan(options.interproscan), go_dictionary)
 
 
 def run_interproscan(options):

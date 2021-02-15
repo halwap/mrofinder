@@ -260,9 +260,9 @@ def choose_pattern(pattern):
 
 # go categories
 
-def get_go_dictionary():
+def get_go_dictionary(path_go_basic):
     from goatools import obo_parser
-    go_dict = obo_parser.GODag('go-basic.obo', optional_attrs='relationship')
+    go_dict = obo_parser.GODag(path_go_basic, optional_attrs='relationship')
     return go_dict
 
 
