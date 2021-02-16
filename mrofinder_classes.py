@@ -136,6 +136,7 @@ class Protein:
         else:
             list_to_print.append('_no_go_hits')
             list_to_print.append('_no_go_hits')
+        list_to_print.extend(self.ncbi_nr_hit)
         list_to_print.append(str(self.targeted_by))
         list_to_print.extend([self.targetp.localisation, self.targetp.probability, self.mitofates.localisation,
                              self.mitofates.probability])

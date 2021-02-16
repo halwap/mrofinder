@@ -47,9 +47,9 @@ def parser():
     parser.add_argument('--db2q_blast', nargs=1, help='Database to proteome blast file')
     parser.add_argument('--mitominer_fasta', help='Mitominer+ fasta after cdhit')
     parser.add_argument('--mitominer_db', help='Mitominer+ blast database')
-    parser.add_argument('--interproscan', nargs=1, help='Interproscan output (run externally (soon TM)).')
+    parser.add_argument('--interproscan', nargs=1, help='Interproscan output (run externally).')
     blast = parser.add_mutually_exclusive_group()
-    blast.add_argument('--blast_nr', nargs=1, help='Blast results in .xml format. (run externally (soon TM))')
+    blast.add_argument('--blast_nr', nargs=1, help='Blast results in .xml format. (run externally)')
     blast.add_argument('--ncbi_nr_db', nargs=1, help='NCBI nr database', default='/mnt/databases/NCBI/nr/nr')
     # alpha/beta options
     parser.add_argument('--tmhmm', nargs='+', help='File(s) with tmhmm results.')
@@ -289,7 +289,7 @@ def parse_nommperd(nommpred_file):
 # ALPHA/BETA STRUCTURE
 def manage_structure(proteome, options):
     manage_tmhmm(proteome, options)
-    manage_beta_structure(options, proteome)
+    manage_beta_structure(proteome, options)
 
 
 # ALPHA
@@ -328,7 +328,7 @@ def run_tmhmm(options):
 
 
 # BETA
-def manage_beta_structure(options, proteome):
+def manage_beta_structure(proteome, options):
     print('Managing psipred ...')
     psipred_wd = os.path.join(options.working_directory, 'psipred')
     os.mkdir(psipred_wd)
@@ -456,7 +456,7 @@ def manage_blast_nr(proteome, options):
         blast_nr_file = run_blast_nr(options)
     else:
         return
-    blast_nr_dict = parse_blast_nr(blast_nr_file, proteome)
+    blast_nr_dict = parse_blast_nr(blast_nr_file)
     proteome.add_blast_nr_results(blast_nr_dict)
 
 
@@ -470,7 +470,7 @@ def run_blast_nr(options):
     return output_path
 
 
-def parse_blast_nr(blast_nr_file, proteome):
+def parse_blast_nr(blast_nr_file):
     blast_dict = {}
     results = SearchIO.parse(blast_nr_file, 'blast-xml')
     for result in results:
