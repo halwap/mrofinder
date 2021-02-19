@@ -418,7 +418,7 @@ def manage_interproscan(proteome, options):
     if not options.interproscan:
         options.interproscan = run_interproscan(options)
     go_dictionary = helpers.get_go_dictionary(databases['go_basic'])
-    proteome.add_go_categories(parse_interproscan(options.interproscan), go_dictionary)
+    proteome.add_go_categories(parse_interproscan(options.interproscan[0]), go_dictionary)
 
 
 def run_interproscan(options):
@@ -428,10 +428,10 @@ def run_interproscan(options):
     # TODO finish proper running
     _p = subprocess.run([paths['interproscan'], '-i', options.input, '-o', output_path, '--goterms', '-f', 'tsv',
                          '--cpu', str(options.threads)])
-    return output_path
+    return [output_path]
 
 
-def parse_interproscan(interproscan_file, ):
+def parse_interproscan(interproscan_file):
     protein2go = {}
     with open(interproscan_file) as file:
         for line in file:
