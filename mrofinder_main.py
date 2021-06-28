@@ -468,7 +468,7 @@ def run_blast_nr(options):
            options.working_fasta, '-db', options.ncbi_nr_db, '-outfmt', '5', '-evalue', '0.001', '-out',
            output_path])
     _p = subprocess.run([os.path.join(paths['blast'], 'blastp'), '-num_threads', str(options.threads), '-query',
-                         options.working_fasta, '-db', options.ncbi_nr_db, '-outfmt', '5', '-evalue', '0.001', '-out',
+                         options.working_fasta, '-db', options.ncbi_nr_db[0], '-outfmt', '5', '-evalue', '0.001', '-out',
                          output_path])
     return output_path
 
