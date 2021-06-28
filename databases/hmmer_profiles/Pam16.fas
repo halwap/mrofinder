@@ -1,0 +1,45 @@
+>gi|300123031|emb|CBK24038.2| Pam16 [Blastocystis hominis]
+MFANAIRTSIKALRVPAVVPLRSMMTCTNYRPNTNLHRSHPGQLYVQRRTFWGPVVRLFT
+QLAASLTSTTIRAFFQAFQEASGLFSLCFLRVSKCLNMSLRHGISINESLEILNMKR--E
+DVNPTSLSERFQQYFEANDPKTGGSFYLQSKVYRAHEALLDELEQYGYIRDENAVAQATA
+SASTSEKTEDAKKSA-----
+>gi|1176485|sp|P42949.1|TIM16_YEAST RecName: Full=Mitochondrial import inner membrane translocase subunit TIM16; AltName: Full=Presequence translocated-associated motor subunit PAM16
+---MAHRAFIQVIITGTQVFGKAFAEAYR------------------------------Q
+AASQSVKQGATNASRRGTGKGE------------------YGGITLDESCKILNIEESKG
+DLNMDKINNRFNYLFEVNDKEKGGSFYLQSKVYRAAERLKWELAQREKNAKAKAGDASTA
+KPPPNSTNSSGADNSASSNQ
+>gi|159477403|ref|XP_001696800.1| presequence translocase-associated protein import motor subunit [Chlamydomonas reinhardtii]
+---MAARVVAQVLVAGATVVFRAATQAWA------------------------------Q
+ALVNAQKSGVASEAAQAAQQAAQTAGSAVK---------KAGTMAVQEAQLILGVE---S
+GASWGDVVKRFKHMFEVNEKH---------------------------------------
+--------------------
+>gi|13385012|ref|NP_079847.1| mitochondrial import inner membrane translocase subunit TIM16 [Mus musculus]
+----MAKYLAQIIVMGVQVVGRAFARALR------------------------------Q
+EFAASQAAADARGRAG-HQSAAASN---------------LSGLSLQEAQQILNVS----
+KLSPEEVQKNYEHLFKVNDKSVGGSFYLQSKVVRAKERLDEELRIQAQEDREKGQKPKT-
+--------------------
+>gi|52138649|ref|NP_001004377.1| mitochondrial import inner membrane translocase subunit Tim16 [Gallus gallus]
+----MAKYLAQIILVGAQVVGRAFMRALR------------------------------Q
+ELAASRAAADARGRSERPQSAAASR---------------IIGISLQEAQQILNVS----
+NLNPEEIQKNYDHLFKVNDKSVGGSFYLQSKVVRAKERLDEELRIQAKDEKEKGWKAET-
+--------------------
+>gi|285812798|tpg|DAA08696.1| TPA: Constituent of the import motor (PAM complex) component of the Translocase of the Inner Mitochondrial membrane (TIM23 complex); forms a 1:1 subcomplex with Pam18p and inhibits its cochaperone activity; contains a J-like domain [Saccharomyces cerevisiae S288c]
+---MAHRAFIQVIITGTQVFGKAFAEAYR------------------------------Q
+AASQSVKQGATNASRRGTGKGE------------------YGGITLDESCKILNIEESKG
+DLNMDKINNRFNYLFEVNDKEKGGSFYLQSKVYRAAERLKWELAQREKNAKAKAGDASTA
+KPPPNSTNSSGADNSASSNQ
+>gi|74997013|sp|Q54SV6.1|TIM16_DICDI RecName: Full=Mitochondrial import inner membrane translocase subunit tim16; AltName: Full=Presequence translocated-associated motor subunit pam16
+---MAARLIAKIVFTSGTVLVRSIQMAYK------------------------------Q
+ALLQAESGMGAAAGSMDVKSK----------------------MSPIEARKILGLENV-E
+TVSKEDIDKKYNELLTINDPKDGGSEYLQIKISGAKHCLHSALKEGKKI-----------
+--------------------
+>gi|115482552|ref|NP_001064869.1| Os10g0479600 [Oryza sativa Japonica Group]
+---MAGKLIANLIVMGSGIIGRAMLQAYR------------------------------K
+ALDNANKTGVAHETINNIRRAS-------------------KTMTEQEARQILGVS---E
+QSTWEEIAQRYDNLFERNAKS--GSFYLQSKVHRAKECLENVYQKNKQDGTPP-------
+--------------------
+>gi|18424521|ref|NP_568943.1| signaling molecule-related [Arabidopsis thaliana]
+---MAARVLASVIVMGSGIIARACTQAYR------------------------------Q
+ALANASKTGVAHEATQTIKRG--------------------LTIGEAEARQILGVT---E
+KSSWDEILKKYDTLFERNAQN--GSFYLQSKVHRAKECLETAYQKSTTTSA---------
+--------------------

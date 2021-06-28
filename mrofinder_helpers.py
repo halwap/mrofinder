@@ -3,7 +3,6 @@ import os
 from glob import glob as glob
 import re
 import yaml
-import mrofinder_classes as classes
 from shutil import rmtree
 from Bio import SeqIO
 
@@ -121,6 +120,7 @@ def parse_blast_tabular(handle):
 
 def search_for_bbhs(q2db_dict, db2q_dict):
     """Checks if query is repriprocal hit of its own hits."""
+    import mrofinder_classes as classes
     final_dict = classes.HomologyResults()
     q2db_keys, db2q_keys = q2db_dict.keys(), db2q_dict.keys()
     for key in q2db_keys:

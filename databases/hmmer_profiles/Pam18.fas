@@ -1,0 +1,40 @@
+>gi|21687102|ref|NP_660304.1| mitochondrial import inner membrane translocase subunit TIM14 isoform 1 [Homo sapiens]
+MAS------TVVAVGLTIA-------------------------------------AAGF
+AGRYVLQA------MKHMEPQVK-QVFQSLPKSAFSGGYYRGGFEPKMTKREAALILGVS
+P-TANK--------GKIRDAHRRIMLLNHPDKGGSPYIAAKINEAKDLLEGQAKK-----
+
+>gi|68487038|ref|XP_712644.1| potential DnaJ-like mitochondrial import motor component [Candida albicans SC5314]
+MAP-------LEAPILAIPGENN--THQQQQQQFQYTGQLQKKKAAEGSIEWYFDQTINF
+MGDHPVITGIGAFAVAYFAAGFIKSNQPGING----KAFVKGGFGAKMTAKEALQILNLK
+ETNLSK--------LKLKEQHRKLMMANHPDKGGSSYIATKINEAKDFLDKRGGMKPK--
+
+>gi|159473148|ref|XP_001694701.1| presequence translocase-associated protein import motor subunit [Chlamydomonas reinhardtii]
+MAT------PLVA-GLSVA-------------------------------------AAAF
+VGKQVVQT------YIKFKTSP--GLFNSVGR-----QYYKGGFLPEMTRREAALILGIR
+E-SAGE--------ERVKDAHRRIMVANHPDSGGSSYVAAKVNEAKDLLLGKKKVGKSPF
+
+>gi|285813430|tpg|DAA09326.1| TPA: Constituent of the import motor (PAM complex) component of the Translocase of the Inner Mitochondrial membrane (TIM23 complex); essential J-protein cochaperone that stimulates Ssc1p ATPase activity to drive import; inhibited by Pam16p [Saccharomyces cerevisiae S288c]
+MSSQSNTGNSIEAPQLPIPGQTNGSANVTVDGAGVNVGIQNGSQGQKTGMDLYFDQALNY
+MGEHPVITGFGAFLTLYFTAGAYKSISKGLNGGKSTTAFLKGGFDPKMNSKEALQILNLT
+ENTLTK--------KKLKEVHRKIMLANHPDKGGSPFLATKINEAKDFLEKRGISK----
+
+>gi|259482611|tpe|CBF77258.1| TPA: Mitochondrial import inner membrane translocase subunit tim14 (Presequence translocated-associated motor subunit pam18) [Source:UniProtKB/Swiss-Prot;Acc:Q5B4H1] [Aspergillus nidulans FGSC A4]
+MAS------ALTL-GLGVA-------------------------------------TAAF
+LGRAGLVA------YRRSKGGV-----NALGK-----AFYKGGFEPRMNRREAALILELP
+ERTLNK--------EKVRKKHRQLMLLNHPDRGGSPYLATKINEAKEFLDKHT-------
+
+>TrichomonasPam18
+MSIVN----KFVEKALSLP-----------------------------------TYAKAA
+IGAGVGLG-----VTSAVFSLFHTDKVVGLPP-----AANLNGFAPTLTRKEAELILNLP
+P-NYTN--------QDIQKHHRTLMALHHPDKGGSPYIATKVNESRDFLTVGIRA-----
+
+>PlasmodiumfalciparuPam18
+---------MWPVVMLLFGG------------------------------------GVLF
+VKKGLNYVKNQGIQLNGKRSFFPSGFNKNLNN--LFLKNDLKGFERNMSKSEAFKILNIN
+P-TTNK--------EKIREVHKQLMLKNHPDNGGSTYIAAKVNEAKDILLK---------
+
+>TbruceiPam18
+MAAP------LAALVLLGG-------------------------------------AYYI
+FRLAPRIT-----QRVSMAQGLTCAANRQLRP----YRRYEGGFEKSMTKREALLLLGFT
+EDVASGGFLSLPSDEEIKTRYYGLMKQLHSDVDGSPYIAAKLNEARDILGKK--------
+

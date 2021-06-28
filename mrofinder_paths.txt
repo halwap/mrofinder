@@ -8,10 +8,10 @@ Software paths/calls:
  tmhmm: /home/halakuc/software/tmhmm-2.0c/bin/tmhmm
  psipred: run_psipred.pl
  blast: /usr/local/bin/
- interproscan: /home/halakuc/software/interproscan-5.36-75.0/interproscan.sh
+ interproscan: /home/halakuc/software/interproscan-5.48-83.0/interproscan.sh
 
 
-#### Databases ######
+##### Databases ######
 
 Databases:
 

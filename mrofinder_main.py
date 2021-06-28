@@ -417,8 +417,8 @@ def manage_interproscan(proteome, options):
     print('Managing interproscan...')
     if not options.interproscan:
         options.interproscan = run_interproscan(options)
-    go_dictionary = helpers.get_go_dictionary(paths['go_basic'])
-    proteome.add_go_categories(parse_interproscan(options.interproscan), go_dictionary)
+    go_dictionary = helpers.get_go_dictionary(databases['go_basic'])
+    proteome.add_go_categories(parse_interproscan(options.interproscan[0]), go_dictionary)
 
 
 def run_interproscan(options):
@@ -428,10 +428,10 @@ def run_interproscan(options):
     # TODO finish proper running
     _p = subprocess.run([paths['interproscan'], '-i', options.input, '-o', output_path, '--goterms', '-f', 'tsv',
                          '--cpu', str(options.threads)])
-    return output_path
+    return [output_path]
 
 
-def parse_interproscan(interproscan_file, ):
+def parse_interproscan(interproscan_file):
     protein2go = {}
     with open(interproscan_file) as file:
         for line in file:
@@ -451,7 +451,7 @@ def parse_interproscan(interproscan_file, ):
 def manage_blast_nr(proteome, options):
     print('Managing blast nr...')
     if options.blast_nr:
-        blast_nr_file = options.blast_nr
+        blast_nr_file = options.blast_nr[0]
     elif options.ncbi_nr_db:
         blast_nr_file = run_blast_nr(options)
     else:
@@ -464,6 +464,9 @@ def run_blast_nr(options):
     blast_nr_wd = os.path.join(options.working_directory, 'blast_nr')
     os.mkdir(blast_nr_wd)
     output_path = helpers.get_output_name(blast_nr_wd, options.input, '2nr.xml')
+    print([os.path.join(paths['blast'], 'blastp'), '-num_threads', str(options.threads), '-query',
+           options.working_fasta, '-db', options.ncbi_nr_db, '-outfmt', '5', '-evalue', '0.001', '-out',
+           output_path])
     _p = subprocess.run([os.path.join(paths['blast'], 'blastp'), '-num_threads', str(options.threads), '-query',
                          options.working_fasta, '-db', options.ncbi_nr_db, '-outfmt', '5', '-evalue', '0.001', '-out',
                          output_path])
