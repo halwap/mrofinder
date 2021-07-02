@@ -4,6 +4,9 @@ import os
 import re
 import math
 from Bio import SeqIO, SearchIO
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
+from Bio.Alphabet import IUPAC
 # from glob import glob as glob
 
 import mrofinder_classes as classes
@@ -18,8 +21,8 @@ def main():
     manage_targeting(proteome, options)
     manage_structure(proteome, options)
     manage_interproscan(proteome, options)
-    manage_blast_nr(proteome, options)
     proteome.annotate()
+    manage_blast_nr(proteome, options)
     save_table(options, proteome)
 
 
@@ -453,29 +456,49 @@ def manage_blast_nr(proteome, options):
     if options.blast_nr:
         blast_nr_file = options.blast_nr[0]
     elif options.ncbi_nr_db:
-        blast_nr_file = run_blast_nr(options)
+        blast_nr_file = run_blast_nr(proteome, options)
     else:
         return
     blast_nr_dict = parse_blast_nr(blast_nr_file)
     proteome.add_blast_nr_results(blast_nr_dict)
 
 
-def run_blast_nr(options):
+def run_blast_nr(proteome, options):
     blast_nr_wd = os.path.join(options.working_directory, 'blast_nr')
     os.mkdir(blast_nr_wd)
+    only_interesting_fasta = prepare_only_interesting_fasta(proteome, options, blast_nr_wd)
     output_path = helpers.get_output_name(blast_nr_wd, options.input, '2nr.xml')
     print([os.path.join(paths['blast'], 'blastp'), '-num_threads', str(options.threads), '-query',
-           options.working_fasta, '-db', options.ncbi_nr_db[0], '-outfmt', '5', '-evalue', '0.001', '-out',
+           only_interesting_fasta, '-db', options.ncbi_nr_db[0], '-outfmt', '5', '-evalue', '0.001', '-out',
            output_path])
     _p = subprocess.run([os.path.join(paths['blast'], 'blastp'), '-num_threads', str(options.threads), '-query',
-                         options.working_fasta, '-db', options.ncbi_nr_db[0], '-outfmt', '5', '-evalue', '0.001', '-out',
-                         output_path])
+                         only_interesting_fasta, '-db', options.ncbi_nr_db[0], '-outfmt', '5', '-evalue', '0.001',
+                         '-out', output_path])
+    with open(output_path) as file_:
+        line = next(file_)
+        print(line)
     return output_path
+
+
+def prepare_only_interesting_fasta(proteome, options, blast_nr_wd):
+    interesting_proteins = []
+    for key, protein in proteome.proteins.items():
+        if protein.interesting:
+            record = SeqRecord(Seq(protein.sequence, IUPAC.protein), id=protein.work_id)
+            interesting_proteins.append(record)
+    out_file_path = helpers.get_output_name(blast_nr_wd, options.input, '_interesting.fasta')
+    with open(out_file_path, 'w') as out_file:
+        SeqIO.write(interesting_proteins, out_file, 'fasta')
+    return out_file_path
 
 
 def parse_blast_nr(blast_nr_file):
     blast_dict = {}
-    results = SearchIO.parse(blast_nr_file, 'blast-xml')
+    try:
+        results = SearchIO.parse(blast_nr_file, 'blast-xml')
+    except StopIteration:
+        print('blast_nr results are empty, skipping')
+        return blast_dict
     for result in results:
         hit = helpers.get_hit(result)
         if hit == 'flag':

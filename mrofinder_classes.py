@@ -77,7 +77,11 @@ class Proteome:
 
     def add_blast_nr_results(self, blast_dictionary):
         for protein_name in self.proteins_keys:
-            blast_hit = blast_dictionary[protein_name]
+            keys = blast_dictionary.keys()
+            if protein_name in keys:
+                blast_hit = blast_dictionary[protein_name]
+            else:
+                blast_hit = ['-', '_no_hit', '-']
             self.proteins[protein_name].add_blast_nr(blast_hit)
 
     def annotate(self):
@@ -119,6 +123,7 @@ class Protein:
         self.mbomp = False
         self.targeted_by = False
         self.homology = False
+        self.interesting = False
 
     def __str__(self):
         list_to_print = [self.id]
@@ -200,6 +205,11 @@ class Protein:
         self.targeted_by = self.check_if_targeted()
         self.mbomp = self.check_if_mbomp()
         self.tail_anchored = self.check_if_ta()
+        if self.targeted_by or \
+            self.mbomp or \
+            self.tail_anchored or \
+            self.hmmer:
+            self.interesting = True
 
     def check_if_targeted(self):
         cnt = 0
