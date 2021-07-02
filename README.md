@@ -61,24 +61,13 @@ TA_or_not_TA, TA_helise_length, TA_helise_hydrophobicity, TA_before_charge, TA_e
 #### Advanced:
 
 ```bash
-tiara -i sample_input.fasta -o out.txt --tf mit pla pro -t 4 -p 0.65 0.60 --probabilities
+mrofinder --help
 ```
 
-In addition to creating the files above, it creates, in the folder where `tiara` is run,
-three files containing sequences from `sample_input.fasta` classified as 
-mitochondria, plastid and prokarya (`--tf mit pla pro` option).
-
-The number of threads is set to 4 (`-t 4`) and probability cutoffs 
-in the first and second stage of classification are set to 0.65 and 0.6, respectively.
-
-The probabilities of belonging to individual classes are also written to 
-`out.txt`, thanks to `--probabilities` option.
-
-For more usage examples, go [here](docs/usage.md).
 
 ## License
 
-Tiara is released under an open-source MIT license 
+mrofinder is released under an open-source MIT license 
 
 
 
