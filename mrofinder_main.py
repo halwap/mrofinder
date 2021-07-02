@@ -465,7 +465,7 @@ def run_blast_nr(options):
     os.mkdir(blast_nr_wd)
     output_path = helpers.get_output_name(blast_nr_wd, options.input, '2nr.xml')
     print([os.path.join(paths['blast'], 'blastp'), '-num_threads', str(options.threads), '-query',
-           options.working_fasta, '-db', options.ncbi_nr_db, '-outfmt', '5', '-evalue', '0.001', '-out',
+           options.working_fasta, '-db', options.ncbi_nr_db[0], '-outfmt', '5', '-evalue', '0.001', '-out',
            output_path])
     _p = subprocess.run([os.path.join(paths['blast'], 'blastp'), '-num_threads', str(options.threads), '-query',
                          options.working_fasta, '-db', options.ncbi_nr_db[0], '-outfmt', '5', '-evalue', '0.001', '-out',
