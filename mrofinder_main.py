@@ -439,6 +439,7 @@ def parse_interproscan(interproscan_file):
         for line in file:
             line = line.strip().split('\t')
             print(line)
+            print(len(line))
             if len(line) == 14:
                 name, gos = line[0], line[13].split('|')
                 print(line[0], line[13])
