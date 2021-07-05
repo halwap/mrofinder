@@ -484,7 +484,7 @@ def prepare_only_interesting_fasta(proteome, options, blast_nr_wd):
     interesting_proteins = []
     for key, protein in proteome.proteins.items():
         if protein.interesting:
-            record = SeqRecord(Seq(protein.sequence), id=protein.work_id)
+            record = SeqRecord(Seq(protein.seq), id=protein.work_id)
             interesting_proteins.append(record)
     if not interesting_proteins:
         return
