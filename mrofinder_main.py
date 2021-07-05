@@ -428,7 +428,7 @@ def run_interproscan(options):
     os.mkdir(interproscan_wd)
     output_path = helpers.get_output_name(interproscan_wd, options.input, '.interproscan')
     # TODO finish proper running
-    _p = subprocess.run([paths['interproscan'], '-i', options.input, '-o', output_path, '--goterms', '-f', 'tsv',
+    _p = subprocess.run([paths['interproscan'], '-i', options.working_fasta, '-o', output_path, '--goterms', '-f', 'tsv',
                          '--cpu', str(options.threads)])
     return [output_path]
 
@@ -482,7 +482,7 @@ def run_blast_nr(proteome, options):
            output_path])
     _p = subprocess.run([os.path.join(paths['blast'], 'blastp'), '-num_threads', str(options.threads), '-query',
                          only_interesting_fasta, '-db', options.ncbi_nr_db[0], '-outfmt', '5', '-evalue', '0.001',
-                         '-out', output_path])
+                         '-max_target_seqs', '100', '-out', output_path])
     with open(output_path) as file_:
         line = next(file_)
         print(line)
