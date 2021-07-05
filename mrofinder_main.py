@@ -438,19 +438,13 @@ def parse_interproscan(interproscan_file):
     with open(interproscan_file) as file:
         for line in file:
             line = line.strip().split('\t')
-            print(line)
-            print(len(line))
             if len(line) == 14:
                 name, gos = line[0], line[13].split('|')
-                print(line[0], line[13])
                 if name not in protein2go.keys():
-                    print(name)
                     protein2go[name] = []
                 for go in gos:
-                    print(go)
                     if go not in protein2go[name]:
                         protein2go[name].append(go)
-    print(protein2go)
     return protein2go
 
 
@@ -477,9 +471,6 @@ def run_blast_nr(proteome, options):
     if not only_interesting_fasta:
         return
     output_path = helpers.get_output_name(blast_nr_wd, options.input, '2nr.xml')
-    print([os.path.join(paths['blast'], 'blastp'), '-num_threads', str(options.threads), '-query',
-           only_interesting_fasta, '-db', options.ncbi_nr_db[0], '-outfmt', '5', '-evalue', '0.001', '-out',
-           output_path])
     _p = subprocess.run([os.path.join(paths['blast'], 'blastp'), '-num_threads', str(options.threads), '-query',
                          only_interesting_fasta, '-db', options.ncbi_nr_db[0], '-outfmt', '5', '-evalue', '0.001',
                          '-max_target_seqs', '100', '-out', output_path])
@@ -527,7 +518,6 @@ def save_table(options, proteome):
     with open(options.output, 'w') as file:
         # TODO naming columns
         for key, protein in proteome.proteins.items():
-            print(str(protein))
             file.write(str(protein) + '\n')
 
 

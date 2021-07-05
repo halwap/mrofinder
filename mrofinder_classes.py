@@ -139,7 +139,6 @@ class Protein:
         else:
             list_to_print.append('_no_mitominer_bbds')
         if self.go_categories:
-            print(type(self.go_categories[0]), type(self.go_descriptions[0]))
             list_to_print.append('|'.join(self.go_categories))
             list_to_print.append('|'.join(self.go_descriptions))
         else:
