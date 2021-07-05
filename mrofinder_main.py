@@ -438,8 +438,10 @@ def parse_interproscan(interproscan_file):
     with open(interproscan_file) as file:
         for line in file:
             line = line.strip().split('\t')
+            print(line)
             if len(line) == 14:
                 name, gos = line[0], line[13].split('|')
+                print(line[0], line[13])
                 if name not in protein2go.keys():
                     protein2go[name] = []
                 for go in gos:
