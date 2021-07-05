@@ -444,10 +444,13 @@ def parse_interproscan(interproscan_file):
                 name, gos = line[0], line[13].split('|')
                 print(line[0], line[13])
                 if name not in protein2go.keys():
+                    print(name)
                     protein2go[name] = []
                 for go in gos:
+                    print(go)
                     if go not in protein2go[name]:
                         protein2go[name].append(go)
+    print(protein2go)
     return protein2go
 
 

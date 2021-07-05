@@ -65,9 +65,11 @@ class Proteome:
                 protein.beta_signal = True
 
     def add_go_categories(self, protein2go, go_dictionary):
+        print('add_go_categories')
         for protein_name in self.proteins_keys:
             go_ids, go_names = [], []
             if protein_name in protein2go.keys():
+                print(protein_name, protein2go[protein_name])
                 go_ids = protein2go[protein_name]
                 go_names = []
                 for go_id in go_ids:
