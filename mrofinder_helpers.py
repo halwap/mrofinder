@@ -263,7 +263,9 @@ def choose_pattern(pattern):
 def get_go_dictionary(path_go_basic):
     from goatools import obo_parser
     go_dict = obo_parser.GODag(path_go_basic, optional_attrs='relationship')
-    print(go_dict.keys()[0])
+    for key in go_dict.keys():
+        print(key)
+        break
     return go_dict
 
 
