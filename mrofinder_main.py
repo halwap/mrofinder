@@ -6,7 +6,6 @@ import math
 from Bio import SeqIO, SearchIO
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
-from Bio.Alphabet import IUPAC
 # from glob import glob as glob
 
 import mrofinder_classes as classes
@@ -484,7 +483,7 @@ def prepare_only_interesting_fasta(proteome, options, blast_nr_wd):
     interesting_proteins = []
     for key, protein in proteome.proteins.items():
         if protein.interesting:
-            record = SeqRecord(Seq(protein.sequence, IUPAC.protein), id=protein.work_id)
+            record = SeqRecord(Seq(protein.sequence), id=protein.work_id)
             interesting_proteins.append(record)
     out_file_path = helpers.get_output_name(blast_nr_wd, options.input, '_interesting.fasta')
     with open(out_file_path, 'w') as out_file:
