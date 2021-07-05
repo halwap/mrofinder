@@ -459,6 +459,8 @@ def manage_blast_nr(proteome, options):
     elif options.ncbi_nr_db:
         blast_nr_file = run_blast_nr(proteome, options)
     else:
+        blast_nr_file = ''
+    if not blast_nr_file:
         return
     blast_nr_dict = parse_blast_nr(blast_nr_file)
     proteome.add_blast_nr_results(blast_nr_dict)
@@ -468,6 +470,8 @@ def run_blast_nr(proteome, options):
     blast_nr_wd = os.path.join(options.working_directory, 'blast_nr')
     os.mkdir(blast_nr_wd)
     only_interesting_fasta = prepare_only_interesting_fasta(proteome, options, blast_nr_wd)
+    if not only_interesting_fasta:
+        return
     output_path = helpers.get_output_name(blast_nr_wd, options.input, '2nr.xml')
     print([os.path.join(paths['blast'], 'blastp'), '-num_threads', str(options.threads), '-query',
            only_interesting_fasta, '-db', options.ncbi_nr_db[0], '-outfmt', '5', '-evalue', '0.001', '-out',
@@ -487,6 +491,8 @@ def prepare_only_interesting_fasta(proteome, options, blast_nr_wd):
         if protein.interesting:
             record = SeqRecord(Seq(protein.sequence), id=protein.work_id)
             interesting_proteins.append(record)
+    if not interesting_proteins:
+        return
     out_file_path = helpers.get_output_name(blast_nr_wd, options.input, '_interesting.fasta')
     with open(out_file_path, 'w') as out_file:
         SeqIO.write(interesting_proteins, out_file, 'fasta')
