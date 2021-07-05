@@ -527,6 +527,7 @@ def save_table(options, proteome):
     with open(options.output, 'w') as file:
         # TODO naming columns
         for key, protein in proteome.proteins.items():
+            print(str(protein))
             file.write(str(protein) + '\n')
 
 
