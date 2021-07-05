@@ -41,6 +41,7 @@ Reminder: THE SOFTWARE IS PROVIDED "AS IS"
 python /path/to/mrofinder_main.py -i input_proteins.fasta -o output_nametsv
 (--hmmer_results hmmer_results_dict/ | --hmmer_queries hmmer_queries_dict/)
 (--q2db_blast protein2mitominer_blast.tab --db2q_blast mitominer2proein_blast.tab | --mitominer_fasta /path/to/mitominer.fasta --mitominer_db /path/to/mitominer_blast_db)
+(| tee log.txt)
 ```
 
 
