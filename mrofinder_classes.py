@@ -71,6 +71,7 @@ class Proteome:
                 go_ids = protein2go[protein_name]
                 go_names = []
                 for go_id in go_ids:
+                    print(go_id)
                     if go_id in go_dictionary.keys():
                         go_names.append(go_dictionary[go_id])
             self.proteins[protein_name].add_go(go_ids, go_names)
