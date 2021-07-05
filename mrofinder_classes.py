@@ -68,11 +68,11 @@ class Proteome:
         for protein_name in self.proteins_keys:
             go_ids, go_names = [], []
             if protein_name in protein2go.keys():
-                go_ids = protein2go[protein_name]
-                go_names = []
-                for go_id in go_ids:
+                go_ids, go_names = [], []
+                for go_id in protein2go[protein_name]:
                     if go_id in go_dictionary.keys():
-                        go_names.append(go_dictionary[go_id])
+                        go_ids.append(go_id)
+                        go_names.append(go_dictionary[go_id].name)
             self.proteins[protein_name].add_go(go_ids, go_names)
 
     def add_blast_nr_results(self, blast_dictionary):
